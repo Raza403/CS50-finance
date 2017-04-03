@@ -12,8 +12,8 @@ def buy():
         number = float (num)
         if number is None or number == '' or number < 1:
             return apology ("Please enter valid number of stocks to buy")
-        
-            
+       
+           
         #Lookup and save dict in quoted    
         quoted = lookup(symbl)
         #If symbol is invalid return apology
@@ -26,7 +26,7 @@ def buy():
             prc = float(qtd) * number
             #remember session id
             ide = session["user_id"]
-            
+           
             csh = db.execute("SELECT * FROM users WHERE id = :ide", ide = ide)
             #Only go forward if user have enough money
             if prc <= csh[0]["cash"]:
@@ -39,7 +39,6 @@ def buy():
                 else:        
                     #If user is buying that share again then just update portfolio
                     if symb[0]["symbol"] == symbl :
-                        #symb = db.execute ("select shares from portfolio where id = :ii" , ii = ide)
                         num =int (symb[0]["shares"]) + number
                         db.execute("update portfolio set price = :price, shares = :shares  where id = :ide AND symbol = :smb", price = symb[0]["price"] + prc, ide = ide, shares = num,smb = symbl)
                         db.execute("UPDATE users SET cash = :cash WHERE id = :ide",cash = csh[0]["cash"] - prc, ide = ide)
